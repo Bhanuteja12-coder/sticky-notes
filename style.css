@@ -1,0 +1,103 @@
+:root{
+  --bg:#f3f4f6;
+  --board:#fffef8;
+  --note-shadow: 0 8px 18px rgba(15,23,42,0.12);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef2ff 0%,#f3f4f6 100%)}
+/* make the app fill the viewport and layout header + board vertically */
+body{display:flex;flex-direction:column;height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:linear-gradient(90deg, rgba(255,255,255,0.95), rgba(250,250,255,0.85));backdrop-filter:blur(6px);box-shadow:0 8px 20px rgba(2,6,23,0.08);border-radius:0;margin:0;position:fixed;top:0;left:0;right:0;z-index:999;height:62px}
+.topbar h1{font-size:18px;margin:0;color:#0f172a;letter-spacing:0.2px}
+.controls{display:flex;gap:10px;align-items:center}
+button{cursor:pointer;padding:10px 12px;border-radius:10px;border:none;background:linear-gradient(180deg,#fff 0%,#f3f4f6 100%);box-shadow:0 6px 18px rgba(2,6,23,0.08);transition:transform 140ms ease,box-shadow 140ms ease}
+button:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(2,6,23,0.12)}
+button:active{transform:translateY(0)}
+.controls select{padding:8px;border-radius:10px;border:1px solid rgba(15,23,42,0.06)}
+select{padding:6px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)}
+.board{position:relative;margin:0;flex:1;min-height:0;background:var(--board);border-radius:0;padding:28px;box-shadow:var(--note-shadow);overflow:auto;width:100%;padding-top:84px}
+/* Board size presets applied via class on #board (handled below) */
+
+/* SVG overlay for connections */
+.board svg.connect-layer{position:absolute;inset:0;pointer-events:auto;overflow:visible;z-index:1}
+.board svg.connect-layer path{transition:stroke 180ms, stroke-width 120ms}
+.board svg.connect-layer path:hover{stroke-width:3}
+.connect-btn-active{
+  background:linear-gradient(180deg,#eef2ff 0%,#e0e7ff 100%);
+  color:#1f2937;
+  border:1px solid rgba(99,102,241,0.28);
+  box-shadow:0 10px 30px rgba(99,102,241,0.12), 0 2px 0 rgba(99,102,241,0.06) inset;
+  transform:translateY(-2px);
+}
+.remove-btn-active{
+  background:linear-gradient(180deg,#ffecec 0%,#ffd7d9 100%);
+  color:#2b0a0f;
+  border:1px solid rgba(244,63,94,0.28);
+  box-shadow:0 10px 30px rgba(244,63,94,0.12), 0 2px 0 rgba(244,63,94,0.06) inset;
+  transform:translateY(-2px);
+}
+
+/* make transitions smooth and provide keyboard focus ring */
+button{transition:transform 140ms ease,box-shadow 140ms ease,background 160ms ease,border-color 160ms ease}
+button:focus-visible{outline:3px solid rgba(59,130,246,0.18);outline-offset:3px}
+
+.note{position:absolute;z-index:2;width:260px;min-height:200px;padding:14px 12px 12px 12px;border-radius:12px;box-shadow:var(--note-shadow);transform-origin:center;user-select:text;border:2px solid rgba(255,255,255,0.18)}
+/* Do not change note dimensions per-sheet — notes keep consistent sizing across sheets */
+/* Add an extra "excel" size that produces a very large board (spreadsheet-like) */
+.board.size-small{min-width:900px;min-height:600px;padding:18px}
+.board.size-medium{min-width:2400px;min-height:1520px;padding:42px}
+.board.size-large{min-width:3200px;min-height:1800px;padding:54px}
+.board.size-biggest{min-width:6600px;min-height:3300px;padding:72px}
+.board.size-excel{min-width:12000px;min-height:9000px;padding:96px}
+.note .pin{position:absolute;left:50%;transform:translateX(-50%);top:-12px;width:26px;height:26px;background:radial-gradient(circle at 35% 30%,#fff 0 20%,transparent 22%),linear-gradient(180deg,#fff7 0,#0002 100%);border-radius:50%;box-shadow:0 6px 16px rgba(2,6,23,0.12);display:flex;align-items:center;justify-content:center}
+.note .pin::after{content:'';width:6px;height:6px;background:rgba(0,0,0,0.45);border-radius:50%}
+.note-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.note .delete{background:rgba(255,255,255,0.12);border:none;font-size:18px;line-height:1;padding:6px 8px;border-radius:8px}
+.note .note-body{width:100%;height:calc(100% - 32px);outline:none;white-space:pre-wrap;word-wrap:break-word;resize:both;padding:10px;border-radius:8px;border:none;font-family:inherit;font-size:15px;background:transparent;color:inherit;box-sizing:border-box}
+
+/* Color variants (background applied to note) */
+.note.color-yellow{background:#f6e96a}
+.note.color-pink{background:#ff9dac}
+.note.color-green{background:#71d07c}
+.note.color-blue{background:#6ea1ff}
+.note.color-peach{background:#f0b07a}
+
+/* Focus / dragging states */
+.note.dragging{opacity:0.95;transform:scale(1.03)}
+.note:focus-within{box-shadow:0 18px 50px rgba(2,6,23,0.18)}
+
+/* Dark mode */
+:root[data-theme='dark']{
+  --bg:#0b1020;
+  --board:#071024;
+  --note-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+body{transition:background 240ms ease}
+.topbar{transition:background 240ms ease,color 240ms}
+.board{transition:background 240ms ease}
+.topbar h1{color:var(--topbar-color, #fff)}
+
+/* When dark theme is active, tweak colors */
+body[data-theme='dark']{background:linear-gradient(180deg,#060712 0%,#0b1020 100%)}
+body[data-theme='dark'] .topbar{background:rgba(10,12,20,0.6)}
+body[data-theme='dark'] .board{background:#071024}
+.note{color:#081226}
+.note.color-yellow{background:#bfa800}
+.note.color-pink{background:#c85a6d}
+.note.color-green{background:#357a46}
+.note.color-blue{background:#2f56c8}
+.note.color-peach{background:#b66b3c}
+
+
+/* Small screen */
+@media (max-width:900px){.note{width:220px}}
+@media (max-width:600px){
+  .note{width:180px}
+  .topbar{margin:6px;padding:10px}
+  .controls{gap:6px}
+}
+
+/* Size change dropdown */
+.size-control button{padding:8px 10px;border-radius:8px}
+.size-control #sizeMenu .size-option{display:block;width:140px;text-align:left;padding:8px;border:none;background:transparent;border-radius:6px;margin:2px 0}
+.size-control #sizeMenu .size-option:hover{background:#f3f4f6}
