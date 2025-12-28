@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sticky Notes Whiteboard</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Sticky Notes Whiteboard</h1>
+      <div class="controls">
+        <select id="sheetPicker" title="Choose sheet"></select>
+        <button id="newSheet">New Sheet</button>
+        <button id="renameSheet">Rename</button>
+        <button id="deleteSheet">Delete</button>
+  <button id="exportSheet" title="Export current sheet">Export JSON</button>
+  <button id="exportPdf" title="Export current sheet as PDF">Export PDF</button>
+        <button id="toExcel" title="Convert this sheet to Excel size">Make Excel</button>
+        <button id="convertAllToExcel" title="Convert all sheets with size 'biggest' to 'excel'">Convert All Biggest → Excel</button>
+        <div class="size-control" style="position:relative">
+          <button id="changeSizeBtn" title="Change sheet size">Change Size ▾</button>
+          <div id="sizeMenu" style="display:none;position:absolute;right:0;top:40px;background:white;border:1px solid rgba(0,0,0,0.08);box-shadow:0 6px 18px rgba(2,6,23,0.08);border-radius:8px;padding:8px;z-index:1200">
+            <button class="size-option" data-size="small">Small</button>
+            <button class="size-option" data-size="medium">Medium</button>
+            <button class="size-option" data-size="large">Large</button>
+            <button class="size-option" data-size="biggest">Biggest</button>
+            <button class="size-option" data-size="excel">Excel</button>
+          </div>
+        </div>
+        <select id="colorPicker" title="Choose color">
+          <option value="#f9f871">Yellow</option>
+          <option value="#ffd1dc">Pink</option>
+          <option value="#c8f7c5">Green</option>
+          <option value="#c9ddff">Blue</option>
+          <option value="#f7e6c2">Peach</option>
+        </select>
+  <button id="addNote">Add Note</button>
+  <button id="clearAll">Clear All</button>
+  <button id="darkToggle" title="Toggle dark mode">🌙</button>
+  <button id="connectToggle" title="Connect notes">🔗</button>
+  <button id="removeKnotToggle" title="Remove knot">🗑️</button>
+      </div>
+    </header>
+
+    <main id="board" class="board" aria-label="Sticky notes board">
+      <!-- Notes will be injected here -->
+    </main>
+
+    <template id="noteTemplate">
+      <article class="note" draggable="true">
+        <div class="pin"></div>
+        <div class="note-header">
+          <button class="delete" title="Delete note">×</button>
+        </div>
+        <textarea class="note-body" spellcheck="true" rows="5"></textarea>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
